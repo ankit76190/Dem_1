@@ -1,0 +1,22 @@
+import pandas as pd
+from sklearn.impute import SimpleImputer
+from sklearn.preprocessing import MinMaxScaler
+
+# Sample dataset with missing values
+data = {
+    'Age': [25, 30, None, 22, 28],
+    'Salary': [50000, 60000, 55000, None, 52000]
+}
+
+df = pd.DataFrame(data)
+
+# Handling missing values using mean imputation
+imputer = SimpleImputer(strategy='mean')
+df_imputed = pd.DataFrame(imputer.fit_transform(df), columns=df.columns)
+
+# Normalizing the data using Min-Max Scaling
+scaler = MinMaxScaler()
+df_normalized = pd.DataFrame(scaler.fit_transform(df_imputed), columns=df.columns)
+
+print("After Imputation:\n", df_imputed)
+print("\nAfter Normalization:\n", df_normalized)
