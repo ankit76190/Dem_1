@@ -1,0 +1,37 @@
+from sklearn.decomposition import PCA
+from sklearn.datasets import load_iris
+from sklearn.preprocessing import StandardScaler
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load dataset
+iris = load_iris()
+X = iris.data
+y = iris.target
+
+# Standardize the data
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+# Apply PCA to reduce to 2 components
+pca = PCA(n_components=2)
+X_pca = pca.fit_transform(X_scaled)
+
+# Create DataFrame for visualization
+df_pca = pd.DataFrame(X_pca, columns=['PC1', 'PC2'])
+df_pca['Target'] = y
+
+print("Explained variance ratio:", pca.explained_variance_ratio_)
+
+# Plot the PCA results
+plt.figure(figsize=(8, 6))
+for target in set(y):
+    subset = df_pca[df_pca['Target'] == target]
+    plt.scatter(subset['PC1'], subset['PC2'], label=iris.target_names[target])
+plt.xlabel('Principal Component 1')
+plt.ylabel('Principal Component 2')
+plt.title('PCA on Iris Dataset')
+plt.legend()
+plt.grid(True)
+plt.tight_layout()
+plt.show()
